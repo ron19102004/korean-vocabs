@@ -649,7 +649,7 @@
             </div>
 
             <!-- Format hint -->
-            <div class="stat-card animate-up" style="animation-delay:0.2s;margin-top:24px;">
+            <div id="format-hint" class="stat-card animate-up" style="animation-delay:0.2s;margin-top:24px;">
                 <p
                     style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--apple-secondary);text-transform:uppercase;letter-spacing:0.05em;">
                     Ví dụ định dạng file</p>
@@ -706,7 +706,7 @@
                     </div>
 
                     <!-- Stats mini -->
-                    <div id="miniStats" style="display:flex;gap:10px;margin-bottom:20px;"></div>
+                    <div id="miniStats" class="grid grid-cols-2 lg:grid-cols-4 gap-2" style="margin-bottom:20px;"></div>
 
                     <button class="btn btn-primary" style="width:100%;" onclick="startStudy()">
                         Bắt đầu học →
@@ -769,7 +769,7 @@
                 <p
                     style="text-align:center;font-size:13px;color:var(--apple-secondary);margin-bottom:12px;font-weight:500;">
                     Bạn nhớ từ này như thế nào?</p>
-                <div style="display:flex;gap:10px;">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
                     <button class="rating-btn rating-again" onclick="rateCard(0)">
                         <span class="emoji">😵</span>Quên
                     </button>
@@ -1053,6 +1053,7 @@
             updateMiniStats();
             document.getElementById('loadedPanel').style.display = 'block';
             document.getElementById('uploadZone').style.display = 'none';
+            document.getElementById('format-hint').style.display = 'none';
             document.querySelector('button[onclick="loadDemo()"]').style.display = 'none';
             document.getElementById('homeBtn').style.display = 'flex';
             document.getElementById('vocabListBtn').style.display = 'flex';
