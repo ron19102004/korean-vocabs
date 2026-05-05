@@ -4,8 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>한국어 — Học Từ Vựng</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>토픽 한국어 어휘 — Học Từ Vựng TOPIK</title>
+
+    <meta name="description"
+        content="Học từ vựng tiếng Hàn TOPIK hiệu quả với phương pháp lặp lại ngắt quãng (SRS). Tải file hoặc kết nối Google Sheet để luyện hơn 3000 từ vựng.">
+    <meta name="keywords"
+        content="TOPIK, từ vựng tiếng Hàn, học tiếng Hàn, SRS, Korean vocabulary, học TOPIK, flashcard tiếng Hàn">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="토픽 한국어 어휘 — Học Từ Vựng TOPIK">
+    <meta property="og:description" content="Web học từ vựng tiếng Hàn với SRS, hỗ trợ file và Google Sheets.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="./logo.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="토픽 한국어 어휘 — Học Từ Vựng TOPIK">
+    <meta name="twitter:description" content="Học từ vựng TOPIK bằng SRS — nhanh nhớ, lâu quên.">
+    <meta name="twitter:image" content="./logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" href="./logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./logo.png">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap"
@@ -564,11 +586,11 @@
 
     <!-- Navigation -->
     <nav id="nav">
-        <div style="display:flex;align-items:center;gap:10px;">
+        <a href="/" class="animate-pulse" style="display:flex;align-items:center;gap:10px;">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--apple-blue);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px;"
                 class="korean">한</div>
             <span style="font-size:16px;font-weight:600;color:var(--apple-text);">한국어</span>
-        </div>
+        </a>
         <div style="display:flex;gap:8px;align-items:center;">
             <button class="btn btn-icon" id="homeBtn" onclick="goHome()" title="Trang chủ"
                 style="width:36px;height:36px;font-size:17px;display:none;">⌂</button>
@@ -587,7 +609,7 @@
             <div class="animate-up" style="text-align:center;margin-bottom:48px;padding-top:20px;">
                 <div
                     style="display:inline-flex;align-items:center;justify-content:center;width:80px;height:80px;background:var(--apple-blue);border-radius:22px;margin-bottom:20px;box-shadow:0 8px 28px rgba(0,113,227,0.35);">
-                    <span class="korean" style="font-size:36px;color:white;font-weight:700;">가</span>
+                    <span class="korean animate-pulse" style="font-size:36px;color:white;font-weight:700;">가</span>
                 </div>
                 <h1 style="font-size:34px;font-weight:700;letter-spacing:-0.5px;line-height:1.2;margin-bottom:10px;">Học
                     Từ Vựng<br>Tiếng Hàn</h1>
@@ -862,6 +884,7 @@
             </div>
             <div id="statsContainer"></div>
         </div>
+
     </div>
 
     <!-- Toast -->
@@ -1436,6 +1459,7 @@
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-' + name).classList.add('active');
             window.scrollTo(0, 0);
+            window.location.replace("#" + name)
         }
 
         function goHome() {
@@ -1488,7 +1512,7 @@
         fetch('vocabs.txt')
             .then(r => r.text())
             .then(text => parseWords(text, 'vocabs.txt'))
-            .catch(() => {});
+            .catch(() => { });
     </script>
 </body>
 
