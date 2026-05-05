@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국어 — Học Từ Vựng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --apple-blue: #0071e3;
+            --apple-blue-dark: #0077ED;
+            --apple-gray: #f5f5f7;
+            --apple-text: #1d1d1f;
+            --apple-secondary: #6e6e73;
+            --apple-tertiary: #aeaeb2;
+            --apple-border: rgba(0, 0, 0, 0.1);
+            --apple-green: #34c759;
+            --apple-red: #ff3b30;
+            --apple-orange: #ff9500;
+            --apple-purple: #af52de;
+            --apple-teal: #32ade6;
+            --card-radius: 20px;
+            --blur: blur(40px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f7;
+            color: var(--apple-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background orbs */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Typography */
+        .korean {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        /* Glass morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Nav */
+        #nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(245, 245, 247, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.12);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* File upload zone */
+        .upload-zone {
+            border: 2px dashed rgba(0, 113, 227, 0.3);
+            border-radius: 18px;
+            background: rgba(0, 113, 227, 0.04);
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.drag-over {
+            border-color: var(--apple-blue);
+            background: rgba(0, 113, 227, 0.08);
+            transform: scale(1.01);
+        }
+
+        .upload-zone input[type=file] {
+            display: none;
+        }
+
+        /* Flashcard */
+        .card-perspective {
+            perspective: 1200px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 360px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            user-select: none;
+        }
+
+        .card-front {
+            background: white;
+            box-shadow: 0 2px 40px rgba(0, 0, 0, 0.10), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-back {
+            background: linear-gradient(145deg, #0071e3, #0077ED 60%, #40a9ff);
+            color: white;
+            transform: rotateY(180deg);
+            box-shadow: 0 8px 40px rgba(0, 113, 227, 0.35), 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            border-radius: 980px;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-primary {
+            background: var(--apple-blue);
+            color: white;
+            padding: 14px 28px;
+            font-size: 16px;
+            box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #0077ed;
+            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(0, 0, 0, 0.06);
+            color: var(--apple-text);
+            padding: 12px 22px;
+            font-size: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            font-size: 22px;
+            background: rgba(0, 0, 0, 0.06);
+            color: var(--apple-text);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Rating buttons */
+        .rating-btn {
+            flex: 1;
+            padding: 14px 12px;
+            border-radius: 16px;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .rating-btn:active {
+            transform: scale(0.94);
+        }
+
+        .rating-btn span.emoji {
+            font-size: 22px;
+        }
+
+        .rating-again {
+            background: #fff1f0;
+            color: #ff3b30;
+        }
+
+        .rating-again:hover {
+            background: #ffe4e2;
+        }
+
+        .rating-hard {
+            background: #fff7e6;
+            color: #ff9500;
+        }
+
+        .rating-hard:hover {
+            background: #ffefd1;
+        }
+
+        .rating-good {
+            background: #e8f5e9;
+            color: #34c759;
+        }
+
+        .rating-good:hover {
+            background: #d8f0db;
+        }
+
+        .rating-easy {
+            background: #e6f2ff;
+            color: var(--apple-blue);
+        }
+
+        .rating-easy:hover {
+            background: #d0e8ff;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            height: 4px;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--apple-blue);
+            border-radius: 2px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Stats card */
+        .stat-card {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 980px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-new {
+            background: #f0e6ff;
+            color: var(--apple-purple);
+        }
+
+        .badge-review {
+            background: #e6f2ff;
+            color: var(--apple-blue);
+        }
+
+        .badge-mastered {
+            background: #e8f5e9;
+            color: var(--apple-green);
+        }
+
+        /* Deck card */
+        .deck-option {
+            background: white;
+            border-radius: 16px;
+            padding: 16px 20px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .deck-option:hover {
+            border-color: var(--apple-blue);
+            box-shadow: 0 4px 16px rgba(0, 113, 227, 0.15);
+        }
+
+        .deck-option.selected {
+            border-color: var(--apple-blue);
+            background: rgba(0, 113, 227, 0.04);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.06);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-8px);
+            }
+
+            75% {
+                transform: translateX(8px);
+            }
+        }
+
+        .animate-up {
+            animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.4s both;
+        }
+
+        /* Segmented control */
+        .seg-control {
+            display: flex;
+            background: rgba(0, 0, 0, 0.06);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .seg-btn {
+            flex: 1;
+            padding: 7px 14px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--apple-secondary);
+        }
+
+        .seg-btn.active {
+            background: white;
+            color: var(--apple-text);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Tooltip hint */
+        .hint-text {
+            font-size: 13px;
+            color: var(--apple-secondary);
+            text-align: center;
+            margin-top: 12px;
+            letter-spacing: 0.01em;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(30, 30, 32, 0.92);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 980px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 999;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* End screen circle */
+        .done-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #34c759, #30d158);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 52px;
+            box-shadow: 0 8px 32px rgba(52, 199, 89, 0.4);
+            margin: 0 auto 24px;
+        }
+
+        /* Level stars */
+        .level-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.12);
+            display: inline-block;
+        }
+
+        .level-dot.filled {
+            background: var(--apple-blue);
+        }
+
+        /* Search */
+        .search-input {
+            width: 100%;
+            padding: 11px 16px 11px 42px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.04);
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--apple-blue);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+        }
+
+        /* Word list */
+        .word-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 12px;
+            transition: background 0.15s;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .word-row:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        /* Swipe hint arrows */
+        .swipe-hint {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            opacity: 0.15;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            color: var(--apple-text);
+        }
+
+        .swipe-hint.left {
+            left: -36px;
+        }
+
+        .swipe-hint.right {
+            right: -36px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .card-inner {
+                height: 300px;
+            }
+
+            .card-face {
+                padding: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background orbs -->
+    <div class="bg-orb" style="width:500px;height:500px;background:#0071e3;top:-100px;right:-100px;"></div>
+    <div class="bg-orb" style="width:400px;height:400px;background:#34c759;bottom:-80px;left:-80px;"></div>
+    <div class="bg-orb" style="width:300px;height:300px;background:#af52de;top:40%;left:60%;"></div>
+
+    <!-- Navigation -->
+    <nav id="nav">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--apple-blue);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px;"
+                class="korean">한</div>
+            <span style="font-size:16px;font-weight:600;color:var(--apple-text);">한국어</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+            <button class="btn btn-icon" id="homeBtn" onclick="goHome()" title="Trang chủ"
+                style="width:36px;height:36px;font-size:17px;display:none;">⌂</button>
+            <button class="btn btn-icon" id="vocabListBtn" onclick="showVocabList()" title="Danh sách từ"
+                style="width:36px;height:36px;font-size:17px;display:none;">≡</button>
+            <button class="btn btn-icon" id="statsBtn" onclick="showStats()" title="Thống kê"
+                style="width:36px;height:36px;font-size:17px;display:none;">◎</button>
+        </div>
+    </nav>
+
+    <!-- SCREEN: Upload / Home -->
+    <div id="screen-home" class="screen active" style="position:relative;z-index:1;">
+        <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
+
+            <!-- Hero -->
+            <div class="animate-up" style="text-align:center;margin-bottom:48px;padding-top:20px;">
+                <div
+                    style="display:inline-flex;align-items:center;justify-content:center;width:80px;height:80px;background:var(--apple-blue);border-radius:22px;margin-bottom:20px;box-shadow:0 8px 28px rgba(0,113,227,0.35);">
+                    <span class="korean" style="font-size:36px;color:white;font-weight:700;">가</span>
+                </div>
+                <h1 style="font-size:34px;font-weight:700;letter-spacing:-0.5px;line-height:1.2;margin-bottom:10px;">Học
+                    Từ Vựng<br>Tiếng Hàn</h1>
+                <p style="font-size:16px;color:var(--apple-secondary);line-height:1.6;">Phương pháp lặp lại ngắt quãng
+                    (Spaced Repetition)<br>giúp bạn ghi nhớ lâu hơn, hiệu quả hơn.</p>
+            </div>
+
+            <!-- Upload zone -->
+            <div id="uploadZone" class="upload-zone animate-up"
+                style="animation-delay:0.1s;padding:40px 24px;text-align:center;"
+                onclick="document.getElementById('fileInput').click();">
+                <input type="file" id="fileInput" accept=".txt" onchange="handleFile(event)">
+                <div style="font-size:48px;margin-bottom:12px;">📂</div>
+                <p style="font-size:17px;font-weight:600;margin-bottom:6px;">Tải lên file từ vựng</p>
+                <p style="font-size:14px;color:var(--apple-secondary);margin-bottom:16px;">Định dạng: <code
+                        style="background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:6px;font-size:13px;">단어;nghĩa</code>
+                    — mỗi từ một dòng</p>
+                <span class="btn btn-secondary" style="pointer-events:none;font-size:14px;">Chọn file .txt</span>
+            </div>
+
+            <!-- Demo button -->
+            <div style="text-align:center;margin-top:16px;" class="animate-up" style="animation-delay:0.15s;">
+                <button class="btn"
+                    style="background:transparent;color:var(--apple-blue);font-size:14px;padding:8px 16px;"
+                    onclick="loadDemo()">
+                    Thử với dữ liệu mẫu →
+                </button>
+            </div>
+
+            <!-- Format hint -->
+            <div class="stat-card animate-up" style="animation-delay:0.2s;margin-top:24px;">
+                <p
+                    style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--apple-secondary);text-transform:uppercase;letter-spacing:0.05em;">
+                    Ví dụ định dạng file</p>
+                <div
+                    style="font-family:monospace;font-size:13px;line-height:2;background:rgba(0,0,0,0.03);border-radius:10px;padding:12px 14px;">
+                    <div><span class="korean" style="color:#0071e3;font-weight:700;">안녕하세요</span><span
+                            style="color:#aeaeb2">;Xin chào</span></div>
+                    <div><span class="korean" style="color:#0071e3;font-weight:700;">감사합니다</span><span
+                            style="color:#aeaeb2">;Cảm ơn</span></div>
+                    <div><span class="korean" style="color:#0071e3;font-weight:700;">사랑해요</span><span
+                            style="color:#aeaeb2">;Tôi yêu bạn</span></div>
+                </div>
+            </div>
+
+            <!-- Loaded state (hidden initially) -->
+            <div id="loadedPanel" style="display:none;" class="animate-up">
+                <div class="stat-card" style="margin-top:20px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                        <div>
+                            <p id="fileNameLabel" style="font-size:15px;font-weight:600;"></p>
+                            <p id="wordCountLabel" style="font-size:13px;color:var(--apple-secondary);"></p>
+                        </div>
+                        <div
+                            style="width:44px;height:44px;background:#e8f5e9;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;">
+                            ✅</div>
+                    </div>
+
+                    <!-- Session size picker -->
+                    <p
+                        style="font-size:13px;font-weight:600;color:var(--apple-secondary);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;">
+                        Số từ mỗi buổi học</p>
+                    <div class="seg-control" style="margin-bottom:16px;">
+                        <button class="seg-btn" data-n="20" onclick="setSessionSize(this,20)">20</button>
+                        <button class="seg-btn" data-n="50" onclick="setSessionSize(this,50)">50</button>
+                        <button class="seg-btn" data-n="100" onclick="setSessionSize(this,100)">100</button>
+                        <button class="seg-btn active" data-n="500" onclick="setSessionSize(this,500)">500</button>
+                    </div>
+
+                    <!-- Mode picker -->
+                    <p
+                        style="font-size:13px;font-weight:600;color:var(--apple-secondary);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;">
+                        Chế độ học</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+                        <div class="deck-option selected" id="modeFlash" onclick="selectMode('flash')">
+                            <div style="font-size:22px;margin-bottom:6px;">🃏</div>
+                            <div style="font-size:13px;font-weight:600;">Flashcard</div>
+                            <div style="font-size:11px;color:var(--apple-secondary);">Lật thẻ học từng từ</div>
+                        </div>
+                        <div class="deck-option" id="modeQuiz" onclick="selectMode('quiz')">
+                            <div style="font-size:22px;margin-bottom:6px;">🎯</div>
+                            <div style="font-size:13px;font-weight:600;">Quiz</div>
+                            <div style="font-size:11px;color:var(--apple-secondary);">Chọn đáp án đúng</div>
+                        </div>
+                    </div>
+
+                    <!-- Stats mini -->
+                    <div id="miniStats" style="display:flex;gap:10px;margin-bottom:20px;"></div>
+
+                    <button class="btn btn-primary" style="width:100%;" onclick="startStudy()">
+                        Bắt đầu học →
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCREEN: Flashcard Study -->
+    <div id="screen-study" class="screen" style="position:relative;z-index:1;">
+        <div style="max-width:560px;margin:0 auto;padding:20px 24px 120px;">
+
+            <!-- Top bar -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <button class="btn btn-secondary" style="padding:8px 16px;font-size:13px;" onclick="goHome()">←
+                    Thoát</button>
+                <div style="text-align:center;">
+                    <p id="sessionProgress" style="font-size:13px;font-weight:600;color:var(--apple-secondary);">1 / 20
+                    </p>
+                </div>
+                <div id="streakBadge"
+                    style="background:#fff7e6;color:#ff9500;padding:6px 14px;border-radius:980px;font-size:13px;font-weight:700;">
+                    🔥 0</div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="progress-bar" style="margin-bottom:24px;">
+                <div class="progress-fill" id="progressFill" style="width:0%"></div>
+            </div>
+
+            <!-- Card container -->
+            <div class="card-perspective" style="position:relative;">
+                <div class="swipe-hint left">‹</div>
+                <div class="swipe-hint right">›</div>
+                <div class="card-inner" id="flashCard" onclick="flipCard()">
+                    <!-- Front -->
+                    <div class="card-face card-front">
+                        <div id="cardBadge" style="margin-bottom:16px;"></div>
+                        <p class="korean" id="cardFront"
+                            style="font-size:52px;font-weight:700;text-align:center;line-height:1.2;letter-spacing:-1px;">
+                        </p>
+                        <p id="cardRomaji" style="font-size:14px;color:var(--apple-secondary);margin-top:10px;"></p>
+                        <p class="hint-text" style="position:absolute;bottom:20px;">Chạm để xem nghĩa</p>
+                    </div>
+                    <!-- Back -->
+                    <div class="card-face card-back">
+                        <p class="korean" id="cardBackKorean"
+                            style="font-size:28px;font-weight:700;text-align:center;opacity:0.9;margin-bottom:8px;"></p>
+                        <div style="width:40px;height:1.5px;background:rgba(255,255,255,0.4);margin:0 auto 16px;"></div>
+                        <p id="cardMeaning" style="font-size:30px;font-weight:600;text-align:center;line-height:1.4;">
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rating buttons (shown after flip) -->
+            <div id="ratingPanel" style="margin-top:24px;display:none;">
+                <p
+                    style="text-align:center;font-size:13px;color:var(--apple-secondary);margin-bottom:12px;font-weight:500;">
+                    Bạn nhớ từ này như thế nào?</p>
+                <div style="display:flex;gap:10px;">
+                    <button class="rating-btn rating-again" onclick="rateCard(0)">
+                        <span class="emoji">😵</span>Quên
+                    </button>
+                    <button class="rating-btn rating-hard" onclick="rateCard(1)">
+                        <span class="emoji">😰</span>Khó
+                    </button>
+                    <button class="rating-btn rating-good" onclick="rateCard(2)">
+                        <span class="emoji">😊</span>Nhớ
+                    </button>
+                    <button class="rating-btn rating-easy" onclick="rateCard(3)">
+                        <span class="emoji">🚀</span>Dễ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Flip hint (shown before flip) -->
+            <div id="flipHint" style="margin-top:24px;text-align:center;">
+                <p style="font-size:14px;color:var(--apple-secondary);">Hoặc nhấn <kbd
+                        style="background:rgba(0,0,0,0.07);padding:3px 8px;border-radius:6px;font-size:12px;font-family:inherit;">Space</kbd>
+                    để lật thẻ</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCREEN: Quiz -->
+    <div id="screen-quiz" class="screen" style="position:relative;z-index:1;">
+        <div style="max-width:560px;margin:0 auto;padding:20px 24px 120px;">
+
+            <!-- Top bar -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <button class="btn btn-secondary" style="padding:8px 16px;font-size:13px;" onclick="goHome()">←
+                    Thoát</button>
+                <div style="text-align:center;">
+                    <p id="quizProgress" style="font-size:13px;font-weight:600;color:var(--apple-secondary);"></p>
+                </div>
+                <div id="quizScore"
+                    style="background:#e6f2ff;color:var(--apple-blue);padding:6px 14px;border-radius:980px;font-size:13px;font-weight:700;">
+                    ✓ 0</div>
+            </div>
+
+            <div class="progress-bar" style="margin-bottom:24px;">
+                <div class="progress-fill" id="quizProgressFill" style="width:0%"></div>
+            </div>
+
+            <!-- Question card -->
+            <div id="quizCard"
+                style="background:white;border-radius:24px;padding:36px 28px;text-align:center;box-shadow:0 2px 40px rgba(0,0,0,0.10);min-height:140px;display:flex;align-items:center;justify-content:center;flex-direction:column;margin-bottom:20px;">
+                <p style="font-size:13px;color:var(--apple-secondary);margin-bottom:10px;font-weight:500;">Nghĩa tiếng
+                    Việt là gì?</p>
+                <p class="korean" id="quizWord" style="font-size:48px;font-weight:700;letter-spacing:-1px;"></p>
+            </div>
+
+            <!-- Options -->
+            <div id="quizOptions" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+
+        </div>
+    </div>
+
+    <!-- SCREEN: Session Complete -->
+    <div id="screen-complete" class="screen" style="position:relative;z-index:1;">
+        <div style="max-width:560px;margin:0 auto;padding:40px 24px;text-align:center;">
+            <div class="done-circle animate-up">🎉</div>
+            <h2 class="animate-up" style="font-size:28px;font-weight:700;margin-bottom:8px;animation-delay:0.1s;">Hoàn
+                thành!</h2>
+            <p class="animate-up"
+                style="font-size:16px;color:var(--apple-secondary);margin-bottom:36px;animation-delay:0.15s;">Kết quả
+                buổi học hôm nay</p>
+
+            <div id="completeStats" class="animate-up"
+                style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px;animation-delay:0.2s;text-align:left;">
+            </div>
+
+            <!-- Distribution -->
+            <div id="ratingDistribution" class="stat-card animate-up"
+                style="animation-delay:0.25s;margin-bottom:24px;text-align:left;"></div>
+
+            <div class="animate-up" style="display:flex;flex-direction:column;gap:12px;animation-delay:0.3s;">
+                <button class="btn btn-primary" style="width:100%;" onclick="startStudy()">Học tiếp →</button>
+                <button class="btn btn-secondary" style="width:100%;" onclick="goHome()">Về trang chủ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN: Word List -->
+    <div id="screen-list" class="screen" style="position:relative;z-index:1;">
+        <div style="max-width:640px;margin:0 auto;padding:20px 24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+                <h2 style="font-size:22px;font-weight:700;">Danh sách từ vựng</h2>
+                <button class="btn btn-secondary" style="padding:8px 16px;font-size:13px;" onclick="goHome()">← Quay
+                    lại</button>
+            </div>
+
+            <!-- Search -->
+            <div style="position:relative;margin-bottom:16px;">
+                <span
+                    style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--apple-tertiary);">🔍</span>
+                <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm từ vựng..."
+                    oninput="filterWords(this.value)">
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="seg-control" style="margin-bottom:16px;">
+                <button class="seg-btn active" onclick="filterByStatus(this,'all')">Tất cả</button>
+                <button class="seg-btn" onclick="filterByStatus(this,'new')">Mới</button>
+                <button class="seg-btn" onclick="filterByStatus(this,'learning')">Đang học</button>
+                <button class="seg-btn" onclick="filterByStatus(this,'mastered')">Thành thạo</button>
+            </div>
+
+            <div id="wordListContainer" style=""></div>
+        </div>
+    </div>
+
+    <!-- SCREEN: Stats -->
+    <div id="screen-stats" class="screen" style="position:relative;z-index:1;">
+        <div style="max-width:560px;margin:0 auto;padding:20px 24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+                <h2 style="font-size:22px;font-weight:700;">Thống kê</h2>
+                <button class="btn btn-secondary" style="padding:8px 16px;font-size:13px;" onclick="goHome()">← Quay
+                    lại</button>
+            </div>
+            <div id="statsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <script>
+        // ==================== STATE ====================
+        let allWords = [];
+        let srData = {};   // {word: {level, nextReview, reps, streak, lastRating}}
+        let sessionWords = [];
+        let sessionIdx = 0;
+        let sessionMode = 'flash';
+        let sessionSize = 500;
+        let isFlipped = false;
+        let sessionResults = { again: 0, hard: 0, good: 0, easy: 0, total: 0 };
+        let currentStreak = 0;
+        let quizScore = 0;
+        let quizIdx = 0;
+        let quizAnswered = false;
+        let filterStatus = 'all';
+        let searchQuery = '';
+        let selectedMode = 'flash';
+
+        const STORAGE_KEY = 'korean_sr_v3';
+
+        // ==================== SRS ALGORITHM ====================
+        function getNextInterval(level, rating) {
+            // SM-2 inspired
+            const intervals = [0, 1, 3, 7, 14, 30, 60, 120, 180];
+            if (rating === 0) return 0; // again → back to start
+            if (rating === 1) return Math.max(0, (level - 1));  // hard
+            if (rating === 2) return intervals[Math.min(level, intervals.length - 1)];  // good
+            if (rating === 3) return intervals[Math.min(level + 2, intervals.length - 1)];  // easy
+            return 0;
+        }
+
+        function getNewLevel(level, rating) {
+            if (rating === 0) return Math.max(0, level - 2);
+            if (rating === 1) return Math.max(0, level - 1);
+            if (rating === 2) return level + 1;
+            if (rating === 3) return level + 2;
+            return 0;
+        }
+
+        function initWord(word) {
+            if (!srData[word]) {
+                srData[word] = { level: 0, nextReview: 0, reps: 0, streak: 0, lastRating: -1 };
+            }
+        }
+
+        function isDue(word) {
+            const now = Date.now();
+            return !srData[word] || srData[word].nextReview <= now;
+        }
+
+        function getWordStatus(word) {
+            if (!srData[word] || srData[word].reps === 0) return 'new';
+            if (srData[word].level >= 6) return 'mastered';
+            return 'learning';
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ srData, fileName: currentFileName }));
+        }
+
+        function loadData() {
+            try {
+                const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                srData = d.srData || {};
+            } catch (e) { srData = {}; }
+        }
+
+        let currentFileName = '';
+
+        // ==================== FILE LOADING ====================
+        function handleFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            currentFileName = file.name;
+            const reader = new FileReader();
+            reader.onload = e => parseWords(e.target.result, file.name);
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        function parseWords(text, name) {
+            const lines = text.split('\n').filter(l => l.trim());
+            const parsed = [];
+            for (const line of lines) {
+                const parts = line.split(';');
+                const word = parts[0].trim();
+                const meaning = parts.length >= 2 ? parts.slice(1).join(';').trim() : '';
+                if (word) parsed.push({ word, meaning: meaning || '—' });
+            }
+            if (parsed.length === 0) { showToast('❌ Không tìm thấy từ vựng hợp lệ'); return; }
+            allWords = parsed;
+            parsed.forEach(w => initWord(w.word));
+            showLoadedPanel(name, parsed.length);
+        }
+
+        function loadDemo() {
+            const demo = `안녕하세요;Xin chào (kính trọng)
+감사합니다;Cảm ơn (kính trọng)
+미안합니다;Xin lỗi (kính trọng)
+사랑해요;Tôi yêu bạn
+친구;Bạn bè
+학교;Trường học
+집;Nhà
+밥;Cơm / Bữa ăn
+물;Nước
+책;Sách
+오늘;Hôm nay
+내일;Ngày mai
+어제;Hôm qua
+좋아요;Tốt / Thích
+싫어요;Không thích
+예쁘다;Đẹp
+크다;To / Lớn
+작다;Nhỏ
+빠르다;Nhanh
+느리다;Chậm
+먹다;Ăn
+마시다;Uống
+자다;Ngủ
+일어나다;Thức dậy
+공부하다;Học bài
+일하다;Làm việc
+가다;Đi
+오다;Đến
+보다;Nhìn / Xem
+듣다;Nghe
+사람;Người
+여자;Phụ nữ
+남자;Đàn ông
+아이;Đứa trẻ
+선생님;Giáo viên
+학생;Học sinh
+의사;Bác sĩ
+회사;Công ty
+가족;Gia đình
+어머니;Mẹ`;
+            currentFileName = 'Demo — 40 từ.txt';
+            parseWords(demo, currentFileName);
+        }
+
+        function showLoadedPanel(name, count) {
+            document.getElementById('fileNameLabel').textContent = name;
+            document.getElementById('wordCountLabel').textContent = `${count.toLocaleString()} từ vựng đã tải`;
+            updateMiniStats();
+            document.getElementById('loadedPanel').style.display = 'block';
+            document.getElementById('uploadZone').style.display = 'none';
+            document.querySelector('button[onclick="loadDemo()"]').style.display = 'none';
+            document.getElementById('homeBtn').style.display = 'flex';
+            document.getElementById('vocabListBtn').style.display = 'flex';
+            document.getElementById('statsBtn').style.display = 'flex';
+            saveData();
+        }
+
+        function updateMiniStats() {
+            const newCount = allWords.filter(w => getWordStatus(w.word) === 'new').length;
+            const learningCount = allWords.filter(w => getWordStatus(w.word) === 'learning').length;
+            const masteredCount = allWords.filter(w => getWordStatus(w.word) === 'mastered').length;
+            const dueCount = allWords.filter(w => isDue(w.word)).length;
+
+            document.getElementById('miniStats').innerHTML = `
+    <div style="flex:1;background:#f0e6ff;border-radius:12px;padding:12px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:#af52de;">${newCount}</div>
+      <div style="font-size:11px;color:#af52de;font-weight:600;">Từ mới</div>
+    </div>
+    <div style="flex:1;background:#fff7e6;border-radius:12px;padding:12px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:#ff9500;">${learningCount}</div>
+      <div style="font-size:11px;color:#ff9500;font-weight:600;">Đang học</div>
+    </div>
+    <div style="flex:1;background:#e8f5e9;border-radius:12px;padding:12px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:#34c759;">${masteredCount}</div>
+      <div style="font-size:11px;color:#34c759;font-weight:600;">Thành thạo</div>
+    </div>
+    <div style="flex:1;background:#e6f2ff;border-radius:12px;padding:12px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:#0071e3;">${dueCount}</div>
+      <div style="font-size:11px;color:#0071e3;font-weight:600;">Cần ôn</div>
+    </div>
+  `;
+        }
+
+        // ==================== SESSION SETUP ====================
+        function setSessionSize(el, n) {
+            sessionSize = n;
+            document.querySelectorAll('.seg-control .seg-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function selectMode(mode) {
+            selectedMode = mode;
+            document.getElementById('modeFlash').classList.toggle('selected', mode === 'flash');
+            document.getElementById('modeQuiz').classList.toggle('selected', mode === 'quiz');
+        }
+
+        function startStudy() {
+            if (allWords.length === 0) { showToast('⚠️ Chưa có từ vựng'); return; }
+            sessionMode = selectedMode;
+
+            // Prioritize due words, then new words
+            const due = allWords.filter(w => isDue(w.word) && getWordStatus(w.word) !== 'new');
+            const newWords = allWords.filter(w => getWordStatus(w.word) === 'new');
+            const notDue = allWords.filter(w => !isDue(w.word));
+
+            // Merge: due first, then new, then shuffle rest
+            let pool = [...shuffle(due), ...shuffle(newWords), ...shuffle(notDue)];
+            sessionWords = pool.slice(0, sessionSize);
+            sessionIdx = 0;
+            sessionResults = { again: 0, hard: 0, good: 0, easy: 0, total: 0 };
+            currentStreak = 0;
+            isFlipped = false;
+
+            if (sessionMode === 'quiz') {
+                startQuizSession();
+            } else {
+                startFlashSession();
+            }
+        }
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        // ==================== FLASHCARD SESSION ====================
+        function startFlashSession() {
+            showScreen('study');
+            loadFlashCard();
+        }
+
+        function loadFlashCard() {
+            if (sessionIdx >= sessionWords.length) { showComplete(); return; }
+            const item = sessionWords[sessionIdx];
+            isFlipped = false;
+            const card = document.getElementById('flashCard');
+            card.classList.remove('flipped');
+
+            document.getElementById('cardFront').textContent = item.word;
+            document.getElementById('cardBackKorean').textContent = item.word;
+            document.getElementById('cardMeaning').textContent = item.meaning;
+
+            const status = getWordStatus(item.word);
+            const badges = { new: '<span class="badge badge-new">✨ Từ mới</span>', learning: '<span class="badge badge-review">🔄 Ôn tập</span>', mastered: '<span class="badge badge-mastered">⭐ Thành thạo</span>' };
+            document.getElementById('cardBadge').innerHTML = badges[status] || '';
+
+            document.getElementById('ratingPanel').style.display = 'none';
+            document.getElementById('flipHint').style.display = 'block';
+
+            updateProgress();
+        }
+
+        function flipCard() {
+            if (isFlipped) return;
+            isFlipped = true;
+            document.getElementById('flashCard').classList.add('flipped');
+            setTimeout(() => {
+                document.getElementById('ratingPanel').style.display = 'block';
+                document.getElementById('flipHint').style.display = 'none';
+                document.getElementById('ratingPanel').style.animation = 'slideUp 0.3s both';
+            }, 300);
+        }
+
+        function rateCard(rating) {
+            const item = sessionWords[sessionIdx];
+            const word = item.word;
+            initWord(word);
+            const old = srData[word];
+            const newLevel = getNewLevel(old.level, rating);
+            const interval = getNextInterval(newLevel, rating);
+            srData[word] = {
+                level: Math.max(0, newLevel),
+                nextReview: Date.now() + interval * 86400000,
+                reps: old.reps + 1,
+                streak: rating >= 2 ? old.streak + 1 : 0,
+                lastRating: rating
+            };
+
+            const keys = ['again', 'hard', 'good', 'easy'];
+            sessionResults[keys[rating]]++;
+            sessionResults.total++;
+
+            if (rating >= 2) {
+                currentStreak++;
+                document.getElementById('streakBadge').textContent = `🔥 ${currentStreak}`;
+            } else {
+                currentStreak = 0;
+                document.getElementById('streakBadge').textContent = `🔥 0`;
+                // Re-add hard words for extra practice
+                if (rating === 0 && sessionWords.length < sessionSize + 5) {
+                    sessionWords.push(item);
+                }
+            }
+
+            saveData();
+            sessionIdx++;
+
+            // Animate next card
+            const card = document.getElementById('flashCard');
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = 'slideUp 0.4s cubic-bezier(0.4,0,0.2,1)';
+            loadFlashCard();
+        }
+
+        function updateProgress() {
+            const pct = (sessionIdx / sessionWords.length) * 100;
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('sessionProgress').textContent = `${sessionIdx + 1} / ${sessionWords.length}`;
+        }
+
+        // ==================== QUIZ SESSION ====================
+        function startQuizSession() {
+            quizIdx = 0;
+            quizScore = 0;
+            showScreen('quiz');
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizIdx >= sessionWords.length) { showComplete(); return; }
+            const item = sessionWords[quizIdx];
+            quizAnswered = false;
+
+            document.getElementById('quizWord').textContent = item.word;
+            document.getElementById('quizProgress').textContent = `${quizIdx + 1} / ${sessionWords.length}`;
+            document.getElementById('quizScore').textContent = `✓ ${quizScore}`;
+            const pct = (quizIdx / sessionWords.length) * 100;
+            document.getElementById('quizProgressFill').style.width = pct + '%';
+
+            // Get 3 wrong answers
+            const others = allWords.filter(w => w.word !== item.word);
+            const wrongs = shuffle(others).slice(0, 3);
+            const options = shuffle([item, ...wrongs]);
+
+            const container = document.getElementById('quizOptions');
+            container.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.style.cssText = 'background:white;color:var(--apple-text);border-radius:16px;padding:16px;font-size:15px;font-weight:500;width:100%;text-align:left;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;justify-content:flex-start;';
+                btn.textContent = opt.meaning;
+                btn.onclick = () => answerQuiz(btn, opt.word === item.word, item);
+                container.appendChild(btn);
+            });
+        }
+
+        function answerQuiz(btn, correct, item) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            if (correct) {
+                btn.style.background = '#e8f5e9';
+                btn.style.borderColor = '#34c759';
+                btn.style.color = '#34c759';
+                quizScore++;
+                currentStreak++;
+                sessionResults.good++;
+                rateWordQuiet(item.word, 2);
+                document.getElementById('quizCard').style.animation = 'pop 0.3s';
+            } else {
+                btn.style.background = '#fff1f0';
+                btn.style.borderColor = '#ff3b30';
+                btn.style.color = '#ff3b30';
+                btn.style.animation = 'shake 0.3s';
+                currentStreak = 0;
+                sessionResults.again++;
+                rateWordQuiet(item.word, 0);
+                // Highlight correct answer
+                document.querySelectorAll('#quizOptions button').forEach(b => {
+                    if (b !== btn && allWords.find(w => w.meaning === b.textContent && w.word === item.word)) {
+                        b.style.background = '#e8f5e9';
+                        b.style.borderColor = '#34c759';
+                        b.style.color = '#34c759';
+                    }
+                });
+            }
+
+            sessionResults.total++;
+            saveData();
+            setTimeout(() => {
+                quizIdx++;
+                loadQuizQuestion();
+            }, 900);
+        }
+
+        function rateWordQuiet(word, rating) {
+            initWord(word);
+            const old = srData[word];
+            const newLevel = getNewLevel(old.level, rating);
+            const interval = getNextInterval(newLevel, rating);
+            srData[word] = { level: Math.max(0, newLevel), nextReview: Date.now() + interval * 86400000, reps: old.reps + 1, streak: rating >= 2 ? old.streak + 1 : 0, lastRating: rating };
+        }
+
+        // ==================== COMPLETE SCREEN ====================
+        function showComplete() {
+            showScreen('complete');
+            updateMiniStats();
+
+            const accuracy = sessionResults.total > 0 ? Math.round(((sessionResults.good + sessionResults.easy) / sessionResults.total) * 100) : 0;
+            const newCount = allWords.filter(w => getWordStatus(w.word) === 'mastered').length;
+
+            document.getElementById('completeStats').innerHTML = `
+    <div class="stat-card">
+      <div style="font-size:28px;font-weight:700;color:var(--apple-blue)">${sessionResults.total}</div>
+      <div style="font-size:13px;color:var(--apple-secondary);margin-top:2px;">Thẻ đã học</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:28px;font-weight:700;color:${accuracy >= 70 ? '#34c759' : '#ff9500'}">${accuracy}%</div>
+      <div style="font-size:13px;color:var(--apple-secondary);margin-top:2px;">Độ chính xác</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:28px;font-weight:700;color:var(--apple-orange)">${currentStreak}</div>
+      <div style="font-size:13px;color:var(--apple-secondary);margin-top:2px;">Streak dài nhất</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:28px;font-weight:700;color:#af52de">${newCount}</div>
+      <div style="font-size:13px;color:var(--apple-secondary);margin-top:2px;">Thành thạo</div>
+    </div>
+  `;
+
+            const total = sessionResults.total || 1;
+            document.getElementById('ratingDistribution').innerHTML = `
+    <p style="font-size:13px;font-weight:600;color:var(--apple-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;">Phân bổ kết quả</p>
+    ${renderRatingBar('😵 Quên', sessionResults.again, total, '#ff3b30')}
+    ${renderRatingBar('😰 Khó', sessionResults.hard, total, '#ff9500')}
+    ${renderRatingBar('😊 Nhớ', sessionResults.good, total, '#34c759')}
+    ${renderRatingBar('🚀 Dễ', sessionResults.easy, total, '#0071e3')}
+  `;
+        }
+
+        function renderRatingBar(label, count, total, color) {
+            const pct = Math.round((count / total) * 100);
+            return `
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+        <span>${label}</span><span style="font-weight:600;color:${color}">${count} (${pct}%)</span>
+      </div>
+      <div style="height:6px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;">
+        <div style="height:100%;width:${pct}%;background:${color};border-radius:3px;transition:width 0.8s ease;"></div>
+      </div>
+    </div>
+  `;
+        }
+
+        // ==================== WORD LIST ====================
+        function showVocabList() {
+            if (allWords.length === 0) { showToast('⚠️ Chưa có từ vựng'); return; }
+            showScreen('list');
+            renderWordList();
+        }
+
+        function filterWords(q) {
+            searchQuery = q.toLowerCase();
+            renderWordList();
+        }
+
+        function filterByStatus(el, status) {
+            filterStatus = status;
+            document.querySelectorAll('#screen-list .seg-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            renderWordList();
+        }
+
+        function renderWordList() {
+            let words = allWords;
+            if (searchQuery) words = words.filter(w => w.word.includes(searchQuery) || w.meaning.toLowerCase().includes(searchQuery));
+            if (filterStatus !== 'all') words = words.filter(w => getWordStatus(w.word) === filterStatus);
+
+            const container = document.getElementById('wordListContainer');
+            if (words.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--apple-secondary);">Không tìm thấy từ nào</div>';
+                return;
+            }
+
+            const statusColors = { new: '#af52de', learning: '#ff9500', mastered: '#34c759' };
+            const statusLabels = { new: 'Mới', learning: 'Học', mastered: '⭐' };
+
+            container.innerHTML = `<div style="background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.06);">
+    ${words.slice(0, 500).map(w => {
+                const s = getWordStatus(w.word);
+                const data = srData[w.word];
+                return `<div class="word-row">
+        <span class="korean" style="font-size:17px;font-weight:700;color:var(--apple-blue);min-width:140px;">${w.word}</span>
+        <span style="flex:1;font-size:14px;color:var(--apple-secondary);padding:0 12px;">${w.meaning}</span>
+        <span style="font-size:11px;font-weight:700;color:${statusColors[s]};background:${statusColors[s]}18;padding:3px 9px;border-radius:8px;">${statusLabels[s]}</span>
+      </div>`;
+            }).join('')}
+    ${words.length > 500 ? `<div style="text-align:center;padding:12px;font-size:13px;color:var(--apple-secondary);">Hiển thị 500 / ${words.length} từ</div>` : ''}
+  </div>`;
+        }
+
+        // ==================== STATS ====================
+        function showStats() {
+            if (allWords.length === 0) { showToast('⚠️ Chưa có từ vựng'); return; }
+            showScreen('stats');
+            renderStats();
+        }
+
+        function renderStats() {
+            const total = allWords.length;
+            const newCount = allWords.filter(w => getWordStatus(w.word) === 'new').length;
+            const learningCount = allWords.filter(w => getWordStatus(w.word) === 'learning').length;
+            const masteredCount = allWords.filter(w => getWordStatus(w.word) === 'mastered').length;
+            const dueCount = allWords.filter(w => isDue(w.word)).length;
+            const masteredPct = Math.round((masteredCount / total) * 100);
+
+            document.getElementById('statsContainer').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+      <div class="stat-card"><div style="font-size:32px;font-weight:700;color:var(--apple-text)">${total.toLocaleString()}</div><div style="font-size:12px;color:var(--apple-secondary);margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;">Tổng từ vựng</div></div>
+      <div class="stat-card"><div style="font-size:32px;font-weight:700;color:var(--apple-blue)">${dueCount}</div><div style="font-size:12px;color:var(--apple-secondary);margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;">Cần ôn hôm nay</div></div>
+      <div class="stat-card"><div style="font-size:32px;font-weight:700;color:#af52de">${newCount.toLocaleString()}</div><div style="font-size:12px;color:var(--apple-secondary);margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;">Từ chưa học</div></div>
+      <div class="stat-card"><div style="font-size:32px;font-weight:700;color:#34c759">${masteredCount.toLocaleString()}</div><div style="font-size:12px;color:var(--apple-secondary);margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;">Thành thạo</div></div>
+    </div>
+
+    <div class="stat-card" style="margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:14px;font-weight:600;">Tiến độ tổng thể</span>
+        <span style="font-size:14px;font-weight:700;color:var(--apple-blue)">${masteredPct}%</span>
+      </div>
+      <div class="progress-bar" style="height:8px;">
+        <div class="progress-fill" style="width:${masteredPct}%;background:linear-gradient(90deg,#0071e3,#34c759);height:100%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--apple-secondary);">
+        <span>${masteredCount} thành thạo</span><span>${total - masteredCount} còn lại</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <p style="font-size:13px;font-weight:600;color:var(--apple-secondary);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.05em;">Phân bổ trạng thái</p>
+      ${renderStatBar('✨ Từ mới', newCount, total, '#af52de')}
+      ${renderStatBar('🔄 Đang học', learningCount, total, '#ff9500')}
+      ${renderStatBar('⭐ Thành thạo', masteredCount, total, '#34c759')}
+    </div>
+
+    <button class="btn" style="width:100%;margin-top:16px;background:#fff1f0;color:#ff3b30;padding:14px;border-radius:14px;font-size:14px;font-weight:600;" onclick="resetProgress()">
+      🗑 Xóa toàn bộ tiến độ
+    </button>
+  `;
+        }
+
+        function renderStatBar(label, count, total, color) {
+            const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+            return `
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;">
+        <span>${label}</span><span style="font-weight:600;color:${color}">${count.toLocaleString()} (${pct}%)</span>
+      </div>
+      <div style="height:6px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;">
+        <div style="height:100%;width:${pct}%;background:${color};border-radius:3px;"></div>
+      </div>
+    </div>
+  `;
+        }
+
+        function resetProgress() {
+            if (!confirm('Xóa toàn bộ tiến độ học? Không thể hoàn tác.')) return;
+            srData = {};
+            allWords.forEach(w => initWord(w.word));
+            saveData();
+            showToast('✅ Đã xóa tiến độ');
+            renderStats();
+            updateMiniStats();
+        }
+
+        // ==================== NAVIGATION ====================
+        function showScreen(name) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + name).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function goHome() {
+            showScreen('home');
+            if (allWords.length > 0) updateMiniStats();
+        }
+
+        // ==================== UTILS ====================
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        // ==================== KEYBOARD ====================
+        document.addEventListener('keydown', e => {
+            const studyActive = document.getElementById('screen-study').classList.contains('active');
+            if (!studyActive) return;
+            if (e.code === 'Space') { e.preventDefault(); if (!isFlipped) flipCard(); }
+            if (e.key === '1') rateIfFlipped(0);
+            if (e.key === '2') rateIfFlipped(1);
+            if (e.key === '3') rateIfFlipped(2);
+            if (e.key === '4') rateIfFlipped(3);
+        });
+
+        function rateIfFlipped(r) {
+            if (isFlipped) rateCard(r);
+        }
+
+        // ==================== DRAG & DROP ====================
+        const uz = document.getElementById('uploadZone');
+        uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag-over'); });
+        uz.addEventListener('dragleave', () => uz.classList.remove('drag-over'));
+        uz.addEventListener('drop', e => {
+            e.preventDefault();
+            uz.classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.txt')) {
+                const reader = new FileReader();
+                reader.onload = ev => parseWords(ev.target.result, file.name);
+                reader.readAsText(file, 'UTF-8');
+            } else {
+                showToast('⚠️ Vui lòng thả file .txt');
+            }
+        });
+
+        // ==================== INIT ====================
+        loadData();
+        fetch('vocabs.txt')
+            .then(r => r.text())
+            .then(text => parseWords(text, 'vocabs.txt'))
+            .catch(() => {});
+    </script>
+</body>
+
+</html>
