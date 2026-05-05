@@ -28,20 +28,21 @@ self.addEventListener("activate", (event) => {
 
 // ================= FETCH =================
 self.addEventListener("fetch", (event) => {
+  const req = event.request;
+
+  // ✅ bỏ qua request không phải http/https
+  if (!req.url.startsWith("http")) return;
+
   event.respondWith(
-    fetch(event.request)
-      .then((res) => {
-        // clone để cache
-        const clone = res.clone();
+    caches.match(req).then((cached) => {
+      if (cached) return cached;
 
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, clone);
+      return fetch(req).then((res) => {
+        return caches.open(CACHE_NAME).then((cache) => {
+          cache.put(req, res.clone());
+          return res;
         });
-
-        return res;
-      })
-      .catch(() => {
-        return caches.match(event.request);
-      }),
+      });
+    }),
   );
 });
