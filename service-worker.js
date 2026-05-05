@@ -1,18 +1,12 @@
 const CACHE_NAME = "topik-v3";
-const urlsToCache = [
-  "/",
-  "/index.html",
-  "/logo.png",
-  "/vocabs.txt",
-];
-
+const urlsToCache = ["./", "./index.html", "./logo.png", "./vocabs.txt"];
 // ================= INSTALL =================
 self.addEventListener("install", (event) => {
   self.skipWaiting(); // update ngay
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(urlsToCache);
-    })
+    }),
   );
 });
 
@@ -25,9 +19,9 @@ self.addEventListener("activate", (event) => {
           if (key !== CACHE_NAME) {
             return caches.delete(key); // xóa cache cũ
           }
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
   self.clients.claim();
 });
@@ -48,6 +42,6 @@ self.addEventListener("fetch", (event) => {
       })
       .catch(() => {
         return caches.match(event.request);
-      })
+      }),
   );
 });
